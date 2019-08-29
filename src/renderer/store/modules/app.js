@@ -1,7 +1,6 @@
 /**
  * 应用程序。
  */
-import Vue from 'vue';
 import packageInfo from '../../../../package';
 import {AppActions} from "../actionTypes";
 import {AppMutations} from "../mutationTypes";
@@ -28,7 +27,7 @@ const app = {
     // 初始化应用
     async [AppActions.InitApp]({commit}) {
       const payload = {
-        name: packageInfo.name,
+        name: packageInfo.build.productName,
         version: packageInfo.version
       };
       commit(AppMutations.SetAppInfo, payload);

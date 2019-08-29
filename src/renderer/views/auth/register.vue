@@ -1,8 +1,8 @@
 <!--登录/注册模板-->
 <template>
-  <el-row :gutter="20">
+  <el-row>
     <el-col :span="12" :offset="6">
-      <div class="wcim__lgregHeader flex1">
+      <div class="wcim__lgregHeader flexbox flex__direction-column">
         <div class="slogan">
           <div class="logo"><img src="src/assets/img/common/logo.png"/></div>
           <h2>{{desktopAppName}}</h2>
@@ -12,7 +12,7 @@
             <ul class="clearfix">
               <li class="flexbox flex-alignc"><i class="iconfont icon-shouji"></i>
                 <input class="iptxt flex1" type="tel"
-                       v-model="registerForm.phone"
+                       v-model="signUpForm.phone"
                        name="verificationToken"
                        placeholder="手机号码"
                        autocomplete="off"
@@ -20,7 +20,7 @@
                   class="borLine"></em></li>
               <li class="flexbox flex-alignc"><i class="iconfont icon-pass"></i>
                 <input class="iptxt flex1" type="password"
-                       v-model="registerForm.password"
+                       v-model="signUpForm.password"
                        name="password"
                        placeholder="登录密码"
                        autocomplete="off"/><em
@@ -28,7 +28,7 @@
               <li class="flexbox flex-alignc"><i class="iconfont icon-vcode"></i>
                 <input class="iptxt flex1"
                        type="text"
-                       v-model="registerForm.verificationToken"
+                       v-model="signUpForm.verificationToken"
                        name="verificationToken"
                        placeholder="验证码"
                        autocomplete="off"/>
@@ -61,10 +61,10 @@
   export default {
     data() {
       return {
-        registerForm: {
+        signUpForm: {
           region: '86',
-          phone: '18650015710',
-          password: 'KVSIORI2',
+          phone: '',
+          password: '',
           verificationToken: undefined
         },
         verificationTip: '获取验证码',
@@ -77,19 +77,29 @@
       ...mapGetters(['desktopAppName', 'desktopAppVersion'])
     },
 
+    mounted() {
+      if (process.env.NODE_ENV === 'development') {
+        this.signUpForm = {
+          region: '86',
+          phone: '18650015710',
+          password: 'KVSIORI2'
+        };
+      }
+    },
+
     methods: {
       async onRegister() {
         try {
-          if (!this.registerForm.phone) {
+          if (!this.signUpForm.phone) {
             wcPop({content: '手机号不能为空！', style: 'background:#e03b30;color:#fff;', time: 2});
-          } else if (!checkTel(this.registerForm.phone)) {
+          } else if (!checkTel(this.signUpForm.phone)) {
             wcPop({content: '手机号格式不正确！', style: 'background:#e03b30;color:#fff;', time: 2});
-          } else if (!this.registerForm.password) {
+          } else if (!this.signUpForm.password) {
             wcPop({content: '密码不能为空！', style: 'background:#e03b30;color:#fff;', time: 2});
-          } else if (!this.registerForm.verificationToken) {
+          } else if (!this.signUpForm.verificationToken) {
             wcPop({content: '验证码不能为空！', style: 'background:#e03b30;color:#fff;', time: 2});
           } else {
-            await this.$store.dispatch(UserActions.Register, this.registerForm);
+            await this.$store.dispatch(UserActions.Register, this.signUpForm);
 
             this.$message.success('注册成功.');
             this.$router.push('/');
@@ -100,13 +110,13 @@
       },
 
       onSendVerificationCode() {
-        if (!this.registerForm.phone) {
+        if (!this.signUpForm.phone) {
           wcPop({
             content: '手机号不能为空！',
             style: 'background:#e03b30;color:#fff;',
             time: 2
           });
-        } else if (!checkTel(this.registerForm.phone)) {
+        } else if (!checkTel(this.signUpForm.phone)) {
           wcPop({
             content: '手机号格式不正确！',
             style: 'background:#e03b30;color:#fff;',

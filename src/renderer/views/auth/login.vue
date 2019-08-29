@@ -6,7 +6,7 @@
         <div class="wcim__lgregHeader flex1">
           <div class="slogan">
             <div class="logo"><img src="src/assets/img/common/logo.png"/></div>
-            <h2>{{desktopAppName}}</h2>
+            <h2>{{app.name}}</h2>
           </div>
 
           <div class="forms">
@@ -40,7 +40,10 @@
             </form>
           </div>
         </div>
-        <div class="wcim__lgregFooter"><p class="version">{{desktopAppName}} v{{desktopAppVersion}}</p></div>
+        <div class="wcim__lgregFooter">
+          <p class="version">{{app.name}} v {{app.version}}</p>
+          <p class="version">&copy;2019</p>
+        </div>
       </div>
     </el-col>
   </el-row>
@@ -63,7 +66,7 @@
     },
 
     computed: {
-      ...mapGetters(['desktopAppName', 'desktopAppVersion'])
+      ...mapGetters(['app'])
     },
 
     mounted() {
