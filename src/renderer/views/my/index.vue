@@ -14,7 +14,8 @@
                   <img class="uimg ml-10" :src="userInfo.portraitUri" style="border-radius: 4px;"/>
                   <span class="lbl flex1 ml-15">
                     <em style="font-size:20px;">{{userInfo.nickname}}</em>
-                    <em class="iconfont icon-male ml-10" style="color:#46b6ef;"></em><i>手机：+86 {{userInfo.phone}}</i></span>
+                    <em class="iconfont icon-male ml-10"
+                        style="color:#46b6ef;"></em><i>手机：+86 {{userInfo.phone}}</i></span>
                 </div>
               </li>
               <li style="background:rgba(255,255,255,.5);border:1px solid #e9e9e9;border-radius:10px;padding:0;">
@@ -28,8 +29,7 @@
                   <i class="iconfont icon-arrR c-999 fs-14 ml-15"></i>
                 </div>
               </li>
-              <li class="mt-15"
-                  style="background:rgba(255,255,255,.5);border:1px solid #e9e9e9;border-radius:10px;padding:0;">
+              <li class="mt-15" style="background:rgba(255,255,255,.5);border:1px solid #e9e9e9;border-radius:10px;padding:0;">
                 <div class="item flexbox flex-alignc wc__material-cell" style="padding:15px;">
                   <label class="lbl flex1">修改密码</label>
                   <i class="iconfont icon-arrR c-999 fs-14 ml-15"></i>
@@ -42,16 +42,26 @@
                   <input class="cp__checkbox-switch" type="checkbox" checked/>
                 </div>
               </li-->
-              <li class="mt-15"
-                  style="background:rgba(255,255,255,.5);border:1px solid #e9e9e9;border-radius:10px;padding:0;">
+              <li class="mt-15" style="background:rgba(255,255,255,.5);border:1px solid #e9e9e9;border-radius:10px;padding:0;">
                 <div class="item flexbox flex-alignc wc__material-cell" style="padding:15px;">
                   <label class="lbl flex1">关于我们</label>
                   <span class="val c-999 fs-14 ff-ar">当前版本: {{app.version}}</span>
                   <!--<i class="iconfont icon-arrR c-999 fs-14 ml-15"></i>-->
                 </div>
               </li>
-              <li class="mt-15" style="padding:0;"><a class="wc__btn-primary" href="javascript:;"
-                                                      style="background: #f25643;" @click="dialogVisible_logout = true">退出当前账号</a>
+              <li class="mt-15" style="background:rgba(255,255,255,.5);border:1px solid #e9e9e9;border-radius:10px;padding:0;">
+                <div class="item flexbox flex-alignc wc__material-cell" style="padding:15px;" @click="onAboutUsClicked">
+                  <label class="lbl flex1">打开调试器</label>
+                </div>
+                <div class="item flexbox flex-alignc wc__material-cell" style="padding:15px; " @click="onReload">
+                  <label class="lbl flex1">重新加载</label>
+                </div>
+              </li>
+
+              <li class="mt-15" style="padding:0;">
+                <a class="wc__btn-primary" href="javascript:;" style="background: #f25643;" @click="dialogVisible_logout = true">
+                   退出当前账号
+                </a>
               </li>
             </ul>
           </div>
@@ -101,6 +111,14 @@
             self.$router.push({path: '/login'})
           }
         });
+      },
+
+      onAboutUsClicked() {
+        this.$electron.remote.getCurrentWindow().toggleDevTools();
+      },
+
+      onReload() {
+        location.reload();
       }
     },
   }
