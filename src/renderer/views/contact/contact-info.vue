@@ -1,7 +1,5 @@
 <template>
   <div>
-    <contact-list></contact-list>
-
     <!-- 内容区 -->
     <div class="vChat-container flex1 flexbox flex__direction-column">
       <div class="vChat__header">
@@ -68,6 +66,13 @@
           id: this.$route.query.id
         });
       }
+    },
+
+    async mounted() {
+      console.log(this.$route.query);
+      this.userInfo = await this.$store.dispatch(ContactActions.GetContactInfo, {
+        id: this.$route.query.id
+      });
     },
 
     methods: {

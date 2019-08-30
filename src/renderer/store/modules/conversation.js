@@ -152,7 +152,7 @@ const conversation = {
     },
 
     // 启动新的会话
-    async [ConversationActions.StartConversation]({commit}, payload) {
+    async [ConversationActions.StartConversation]({dispatch, commit}, payload) {
       const con = {
         conversationType: payload.conversationType,
         targetId: payload.targetId,

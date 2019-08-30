@@ -40,16 +40,15 @@ const router = new Router({
       name: 'ContactList',
       meta: {requireAuth: true},
       component: resolve => require(['../views/contact'], resolve),
-    },
-    {
-      path: '/contact/new-friends',
-      meta: {requireAuth: true},
-      component: resolve => require(['../views/contact/new-friends'], resolve),
-    },
-    {
-      path: '/contact/contact-info',
-      name: 'ContactInfo',
-      component: resolve => require(['../views/contact/contact-info'], resolve),
+      children: [{
+        path: 'new-friends',
+        meta: {requireAuth: true},
+        component: resolve => require(['../views/contact/new-friends'], resolve),
+      }, {
+        path: 'contact-info',
+        name: 'ContactInfo',
+        component: resolve => require(['../views/contact/contact-info'], resolve),
+      }]
     },
 
     // 群组
@@ -58,11 +57,11 @@ const router = new Router({
       name: 'GroupList',
       meta: {requireAuth: true},
       component: resolve => require(['../views/group'], resolve),
-    },
-    {
-      path: '/groups/group-info',
-      name: 'GroupInfo',
-      component: resolve => require(['../views/group/group-info'], resolve),
+      children: [{
+        path: 'group-info',
+        name: 'GroupInfo',
+        component: resolve => require(['../views/group/group-info'], resolve),
+      }]
     },
 
     // 朋友圈

@@ -34,7 +34,6 @@ service.interceptors.request.use(
 // HTTP响应拦截器
 service.interceptors.response.use(
   async (response) => {
-
     if (response.status === 200) {
       // 若有更新，保存token
       if(response.headers.token) {

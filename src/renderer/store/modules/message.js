@@ -1,4 +1,4 @@
-import {ContactActions, GroupActions, MessageActions, UserActions} from "../actionTypes";
+import {ContactActions, GroupActions, MessageActions} from "../actionTypes";
 import {MessageMutations} from "../mutationTypes";
 
 const conversation = {

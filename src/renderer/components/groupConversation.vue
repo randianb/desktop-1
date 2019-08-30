@@ -200,6 +200,8 @@
             content: payload.content,
             messageType: payload.messageType
           });
+
+          // todo: 滚动会话消息列表
         } catch (e) {
           console.error(`群组消息发送失败: `, e);
         }

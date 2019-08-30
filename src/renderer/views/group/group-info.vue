@@ -1,7 +1,5 @@
 <template>
   <div>
-    <group-list></group-list>
-
     <div class="vChat-container flex1 flexbox flex__direction-column" v-if="groupInfo.id">
       <div class="vChat__header">
         <div class="inner flexbox">
@@ -79,6 +77,12 @@
       }
     },
 
+    async mounted() {
+      this.groupInfo = await this.$store.dispatch(GroupActions.GetGroupInfo, {
+        id: this.$route.query.id
+      });
+    },
+
     methods: {
       // 启动会话
       async onStartConversation() {
@@ -87,7 +91,7 @@
           targetId: this.groupInfo.id
         });
 
-        this.$router.push({name: 'ConversationList'query: {targetId: this.groupInfo.id}});
+        this.$router.push({name: 'ConversationList', query: {targetId: this.groupInfo.id}});
       }
     }
   }

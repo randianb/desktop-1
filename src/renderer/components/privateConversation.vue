@@ -86,6 +86,8 @@
             content: payload.content,
             messageType: payload.messageType,
           });
+
+          // todo: 滚动会话消息列表
         } catch (e) {
           console.error(`私聊消息发送失败: `, e);
         }
@@ -93,6 +95,7 @@
     },
   }
 
+  // 播放视频
   $(function () {
     $("body").on("click", "#J__chatMsgList li .video", function () {
       var _src = $(this).find("img").attr("videoUrl"), _video;

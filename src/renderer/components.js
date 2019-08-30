@@ -9,6 +9,7 @@ import messageSendBox from './components/messageSendBox'
 import conversationList from './components/conversationList'
 import groupConversation from './components/groupConversation'
 import privateConversation from './components/privateConversation'
+import videoPlayer from './components/videoPlayer'
 import winBar from './components/winbar'
 import sideBar from './components/sidebar'
 
@@ -44,6 +45,7 @@ const install = Vue => {
   Vue.component('conversation-list', conversationList);
   Vue.component('group-conversation', groupConversation);
   Vue.component('private-conversation', privateConversation);
+  Vue.component('video-player', videoPlayer);
   Vue.component('win-bar', winBar);
   Vue.component('side-bar', sideBar);
 
