@@ -19,14 +19,14 @@ const conversation = {
       state.conversations = payload;
     },
 
-    // 添加会话
+    // 添加会话，在前部插入
     [ConversationMutations.PrependConversation](state, payload) {
       state.conversations.unshift(payload);
     }
   },
 
   actions: {
-    // 会话列表
+    // 获取会话列表
     async [ConversationActions.GetConversationList]({dispatch, commit, getters}, payload) {
       getters.imClient.getInstance().getConversationList({
         onSuccess: async function(list) {
@@ -88,12 +88,12 @@ const conversation = {
       let conversationType = payload.conversationType;
       let targetId = payload.targetId;
       let msg = null;
-      if (payload.type === 1){
+      if (payload.messageType === 1){
         msg = new RongIMLib.TextMessage({
           content: payload.content,
           extra: ''
         });
-      } else if (payload.type === 2) {
+      } else if (payload.messageType === 2) {
         new RongIMLib.ImageMessage({
           base64Str: payload.content,
           imageUri: payload.imageUri
@@ -149,6 +149,26 @@ const conversation = {
           Vue.prototype.$message.error(info);
         }
       });
+    },
+
+    // 启动新的会话
+    async [ConversationActions.StartConversation]({commit}, payload) {
+      const con = {
+        conversationType: payload.conversationType,
+        targetId: payload.targetId,
+      };
+
+      if (payload.conversationType === RongIMLib.ConversationType.PRIVATE) {
+        let contact = await dispatch(ContactActions.GetContactInfo, {id: payload.targetId});
+        con.conversationTitle = contact.nickname;
+        con.senderPortraitUri = contact.portraitUri;
+      } else if (item.conversationType === RongIMLib.ConversationType.GROUP) {
+        let group = await dispatch(GroupActions.GetGroupInfo, {id: payload.targetId});
+        con.conversationTitle = group.name;
+        con.senderPortraitUri = group.portraitUri;
+      }
+
+      commit(ConversationMutations.PrependConversation, con);
     }
   }
 };

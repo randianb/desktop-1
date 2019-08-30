@@ -25,13 +25,15 @@ const router = new Router({
       component: resolve => require(['../views/auth/register'], resolve),
     },
 
-    // 首页、通讯录、群组、朋友圈
+    // 首页
     {
       path: '/',
       redirect: '/conversations',
       meta: {requireAuth: true},
       component: resolve => require(['../views/index'], resolve),
     },
+
+    // 通讯录
     {
       path: '/contacts',
       // redirect: '/contact/new-friends',
@@ -49,6 +51,8 @@ const router = new Router({
       name: 'ContactInfo',
       component: resolve => require(['../views/contact/contact-info'], resolve),
     },
+
+    // 群组
     {
       path: '/groups',
       name: 'GroupList',
@@ -60,6 +64,8 @@ const router = new Router({
       name: 'GroupInfo',
       component: resolve => require(['../views/group/group-info'], resolve),
     },
+
+    // 朋友圈
     {
       path: '/moments',
       name: 'Moments',
@@ -70,17 +76,16 @@ const router = new Router({
       meta: {requireAuth: true},
       component: resolve => require(['../views/moment/write'], resolve),
     },
-    // 聊天页面
+
+    // 会话
     {
       path: '/conversations',
       name: 'ConversationList',
       meta: {requireAuth: true},
       component: resolve => require(['../views/conversation/index'], resolve),
     },
-    /*{
-      path: '/chat/single-chat', component: resolve => require(['../views/chat/single-chat'], resolve),
-      meta: {requireAuth: true}
-    }*/
+
+    // 个人设置
     {
       path: '/my',
       meta: {requireAuth: true},

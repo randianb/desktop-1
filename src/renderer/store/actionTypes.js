@@ -50,6 +50,8 @@ export const RongCloudActions = {
 export const ConversationActions = {
   GetConversationList: 'GetConversationList',
   ClearConversationUnreadCount: 'ClearConversationUnreadCount',
+
+  StartConversation: 'StartConversation',
   SendMessage: 'SendMessage',
 };
 

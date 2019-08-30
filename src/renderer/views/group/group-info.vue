@@ -1,4 +1,3 @@
-<!--好友信息模板-->
 <template>
   <div>
     <group-list></group-list>
@@ -40,12 +39,15 @@
               <li>
                 <div class="item flexbox flex-alignc">
                   <label class="lbl">群禁言</label>
-                  <div class="cnt flex1 c-999">{{groupInfo.isMuted ?  '已禁言' : '未禁言'}}</div>
+                  <div class="cnt flex1 c-999">{{groupInfo.isMuted ? '已禁言' : '未禁言'}}</div>
                 </div>
               </li>
               <li>
                 <div class="item align-c">
-                  <el-button type="success" size="medium" style="border-radius:0;padding:10px 50px;">发消息</el-button>
+                  <el-button type="success" size="medium" style="border-radius:0;padding:10px 50px;"
+                             @click="onStartConversation">
+                    <span>发消息</span>
+                  </el-button>
                 </div>
               </li>
             </ul>
@@ -58,7 +60,7 @@
 </template>
 
 <script>
-  import {GroupActions} from "../../store/actionTypes";
+  import {ConversationActions, GroupActions} from "../../store/actionTypes";
 
   export default {
     data() {
@@ -76,9 +78,21 @@
         });
       }
     },
+
+    methods: {
+      // 启动会话
+      async onStartConversation() {
+        await this.$store.dispatch(ConversationActions.StartConversation, {
+          conversationType: RongIMLib.ConversationType.GROUP,
+          targetId: this.groupInfo.id
+        });
+
+        this.$router.push({name: 'ConversationList'query: {targetId: this.groupInfo.id}});
+      }
+    }
   }
 </script>
 
-<style>
+<style scoped>
 
 </style>

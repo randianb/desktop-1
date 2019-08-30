@@ -37,6 +37,13 @@
   import {mapGetters} from 'vuex';
 
   export default {
+    props: {
+      targetId: {
+        type: String,
+        default: () => undefined
+      }
+    },
+
     data() {
       return {
         keyword: '',

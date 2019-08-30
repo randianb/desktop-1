@@ -84,7 +84,7 @@
             conversationType: this.conversation.conversationType,
             targetId: this.conversation.targetId,
             content: payload.content,
-            type: payload.type,
+            messageType: payload.messageType,
           });
         } catch (e) {
           console.error(`私聊消息发送失败: `, e);

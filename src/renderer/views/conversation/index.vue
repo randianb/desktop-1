@@ -1,6 +1,6 @@
 <template>
   <div>
-    <conversation-list @conversationChanged="onConversationChanged"></conversation-list>
+    <conversation-list :targetId.sync="targetId" @conversationChanged="onConversationChanged"></conversation-list>
 
     <group-conversation :conversation="currentConversation" v-if="isGroupConversation"></group-conversation>
     <private-conversation :conversation="currentConversation" v-if="isPrivateConversation"></private-conversation>
@@ -14,6 +14,7 @@
   export default {
     data() {
       return {
+        targetId: undefined,
         currentConversation: undefined
       }
     },
@@ -31,6 +32,10 @@
     },
 
     mounted() {
+      if (this.$route.targetId) {
+        this.targetId = this.$route.targetId;
+      }
+
       this.getConversationList();
     },
 

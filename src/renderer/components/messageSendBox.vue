@@ -638,7 +638,7 @@
 
         this.$emit('sendMessage', {
           content: this.content,
-          type: type,
+          messageType: type,
         });
 
         this.content = '';

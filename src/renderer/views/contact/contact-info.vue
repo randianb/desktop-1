@@ -1,4 +1,3 @@
-<!--好友信息模板-->
 <template>
   <div>
     <contact-list></contact-list>
@@ -6,7 +5,7 @@
     <!-- 内容区 -->
     <div class="vChat-container flex1 flexbox flex__direction-column">
       <div class="vChat__header">
-        <div class="inner flexbox"><h2 class="barTit flex1">详细资料</h2></div>
+        <div class="inner flexbox"><h2 class="barTit flex1">好友详情</h2></div>
       </div>
       <div class="vChat__main flex1 flexbox flex__direction-column">
         <geminiScrollbar autoshow class="geminiScrollbar flex1">
@@ -34,12 +33,15 @@
               <li>
                 <div class="item flexbox flex-alignc">
                   <label class="lbl">手 机</label>
-                  <div class="cnt flex1 c-999">+86 {{userInfo.phone}}</div>
+                  <div class="cnt flex1 c-999">+{{userInfo.region}}&nbsp;{{userInfo.phone}}</div>
                 </div>
               </li>
               <li>
                 <div class="item align-c">
-                  <el-button type="success" size="medium" style="border-radius:0;padding:10px 50px;">发消息</el-button>
+                  <el-button type="success" size="medium" style="border-radius:0;padding:10px 50px;"
+                             @click="onStartConversation">
+                    <span>发消息</span>
+                  </el-button>
                 </div>
               </li>
             </ul>
@@ -51,7 +53,7 @@
 </template>
 
 <script>
-  import {ContactActions} from "../../store/actionTypes";
+  import {ContactActions, ConversationActions} from "../../store/actionTypes";
 
   export default {
     data() {
@@ -67,6 +69,18 @@
         });
       }
     },
+
+    methods: {
+      // 启动会话
+      async onStartConversation() {
+        await this.$store.dispatch(ConversationActions.StartConversation, {
+          conversationType: RongIMLib.ConversationType.PRIVATE,
+          targetId: this.userInfo.id
+        });
+
+        this.$router.push({name: 'ConversationList', query: {targetId: this.userInfo.id}});
+      }
+    }
   }
 </script>
 
