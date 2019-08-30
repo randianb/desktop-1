@@ -23,6 +23,9 @@
               <p class="desc clamp1">{{s.latestMessage.content.content}}</p>
             </div>
             <!--<label class="time flex-selft">{{s.latestMessage.sentTime}}</label>-->
+            <label class="time flex-selft">
+              <i class="iconfont icon-unmuted" v-if="isConversationMuted(s)"></i>
+            </label>
           </li>
         </ul>
       </geminiScrollbar>
@@ -50,6 +53,17 @@
     methods: {
       onConversationClicked(s) {
         this.$emit('conversationChanged', s);
+      },
+
+      isConversationMuted(conversation) {
+        let isMuted = false;
+        if (conversation.conversationType === RongIMLib.ConversationType.GROUP) {
+          const groupInfo = this.$store.getters.groupInfo(conversation.targetId);
+          isMuted = groupInfo.isMuted;
+        }
+
+        console.log(isMuted);
+        return isMuted;
       }
     },
   }

@@ -70,6 +70,17 @@ const group = {
       state.groups = payload;
     },
 
+    // 设置群组信息
+    [GroupMutations.SetGroupInfo](state, payload) {
+      state.groups.rows.forEach(group => {
+        if (group.id !== payload.id) return;
+
+        group.isMuted  = payload.isMuted;
+        group.bulletin  = payload.bulletin;
+        group.memberCount  = payload.memberCount;
+      });
+    },
+
     // 设置群组成员
     [GroupMutations.SetGroupMemberList](state, payload) {
       state.groupMembers[payload.groupId] = payload.members;
@@ -125,11 +136,39 @@ const group = {
 
     // 获取群组成员列表
     async [GroupActions.GetGroupMemberList]({getters, commit}, payload) {
-      const members = await request({url: `/im/groups/members?groupId${payload.id}`, method: 'get'});
+      const members = await request({url: `/im/groups/members?groupId=${payload.id}`, method: 'get'});
       commit(GroupMutations.SetGroupMemberList, {
         groupId: payload.id,
         members
       });
+    },
+
+    // 群组禁言
+    async [GroupActions.MuteGroup]({getters, commit}, payload) {
+      await request({
+        url: `/im/groups/add_mute_group`,
+        method: 'post',
+        data: {
+          groupId: payload.groupId,
+        }
+      });
+    },
+
+    // 解除禁言
+    async [GroupActions.UnmuteGroup]({getters, commit}, payload) {
+      await request({
+        url: `/im/groups/remove_mute_group`,
+        method: 'post',
+        data: {
+          groupId: payload.groupId,
+        }
+      });
+    },
+
+    // 更新群组信息
+    async [GroupActions.UpdateGroupInfo]({getters, commit}, payload) {
+      const group = await request({url: `/im/groups?id=${payload.groupId}`, method: 'get'});
+      commit(GroupMutations.SetGroupInfo, group);
     },
   }
 };

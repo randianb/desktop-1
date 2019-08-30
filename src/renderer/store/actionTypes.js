@@ -29,8 +29,11 @@ export const GroupActions = {
   GetGroupList: 'GetGroupList',
   GetGroupInfo: 'GetGroupInfo',
   GetGroupMemberInfo: 'GetGroupMemberInfo',
-
   GetGroupMemberList: 'GetGroupMemberList',
+
+  MuteGroup: 'MuteGroup',
+  UnmuteGroup: 'UnmuteGroup',
+  UpdateGroupInfo: 'UpdateGroupInfo'
 };
 
 // 参数

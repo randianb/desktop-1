@@ -40,7 +40,7 @@
         </p>
         <div slot="footer">
           <el-button size="mini" @click="dialogMuteVisible = false">取消</el-button>
-          <el-button type="primary" size="mini" @click="onMuteGroup">确定</el-button>
+          <el-button type="primary" size="mini" @click="onMuteGroupClicked">确定</el-button>
         </div>
       </el-dialog>
 
@@ -93,7 +93,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
-  import {ConversationActions, MessageActions} from "../store/actionTypes";
+  import {ConversationActions, GroupActions, MessageActions} from "../store/actionTypes";
 
   export default {
     props: {
@@ -161,11 +161,37 @@
     },
 
     methods: {
-      onMuteGroup() {
-        this.dialogMuteVisible = false;
-        this.$message({type: 'success', center: true, message: '操作成功!'});
+      /**
+       * 群组禁言。
+       */
+      async onMuteGroupClicked() {
+        try {
+          if (this.groupInfo.isMuted) {
+            await this.$store.dispatch(GroupActions.UnmuteGroup, {
+              groupId: this.conversation.targetId
+            });
+          } else {
+            await this.$store.dispatch(GroupActions.MuteGroup, {
+              groupId: this.conversation.targetId
+            });
+          }
+
+          await this.$store.dispatch(GroupActions.UpdateGroupInfo, {
+            groupId: this.conversation.targetId
+          });
+
+          this.dialogMuteVisible = false;
+          this.$message({type: 'success', center: true, message: '操作成功!'});
+        } catch (e) {
+          this.$message.error(e.message);
+        }
       },
 
+      /**
+       * 发送消息。
+       *
+       * @param payload
+       */
       async onSendMessage(payload) {
         try {
           await this.$store.dispatch(ConversationActions.SendMessage, {
@@ -180,7 +206,6 @@
       }
     },
   }
-
 
   $(function () {
     $("body").on("click", "#J__chatMsgList li .video", function () {

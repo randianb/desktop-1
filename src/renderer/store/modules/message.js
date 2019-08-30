@@ -191,7 +191,7 @@ const conversation = {
       state.messages = {
         ...state.messages,
         [payload.targetId]: messages
-      }
+      };
     },
 
     // 后部插入
@@ -202,8 +202,7 @@ const conversation = {
       state.messages = {
         ...state.messages,
         [payload.targetId]: messages
-      }
-      console.log(payload);
+      };
     },
   },
 
@@ -224,14 +223,14 @@ const conversation = {
             const item = list[i];
             if (item.objectName === 'RC:TxtMsg') {
               let sender = null;
-              if (item.conversationType === 1) {
+              if (item.conversationType === RongIMLib.ConversationType.PRIVATE) {
                 // 私聊，获取用户信息
                 let contact = await dispatch(ContactActions.GetContactInfo, {id: item.targetId})
                 sender = {
                   nickname: contact.nickname,
                   portraitUri: contact.portraitUri,
                 }
-              } else if (item.conversationType === 3) {
+              } else if (item.conversationType === RongIMLib.ConversationType.GROUP) {
                 // 群聊，获取成员信息
                 let member = await dispatch(GroupActions.GetGroupMemberInfo, {
                   id: item.targetId,
@@ -261,7 +260,7 @@ const conversation = {
               };
             }
 
-            if (message) messages.push(message)
+            if (message) messages.push(message);
           }
 
           // console.log(messages);

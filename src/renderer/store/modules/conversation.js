@@ -33,11 +33,11 @@ const conversation = {
           try {
             for (let i = 0; i < list.length; ++i) {
               let item = list[i];
-              if (item.conversationType === 1) {
+              if (item.conversationType === RongIMLib.ConversationType.PRIVATE) {
                 let contact = await dispatch(ContactActions.GetContactInfo, {id: item.targetId});
                 item.conversationTitle = contact.nickname;
                 item.senderPortraitUri = contact.portraitUri;
-              } else if (item.conversationType === 3) {
+              } else if (item.conversationType === RongIMLib.ConversationType.GROUP) {
                 let group = await dispatch(GroupActions.GetGroupInfo, {id: item.targetId});
                 item.conversationTitle = group.name;
                 item.senderPortraitUri = group.portraitUri;
@@ -69,7 +69,7 @@ const conversation = {
               // 清除未读消息成功
               con.unreadMessageCount = payload.count;
               getters.imClient.getInstance().updateConversation(con);
-              console.log("清除未读消息成功: ", con);
+              // console.log("清除未读消息成功: ", con);
             },
             onError: function (e) {
               console.error('清除未读消息失败：', e);

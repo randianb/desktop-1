@@ -20,11 +20,13 @@
 
     computed: {
       isPrivateConversation() {
-        return this.currentConversation && this.currentConversation.conversationType === RongIMLib.ConversationType.PRIVATE;
+        return this.currentConversation &&
+          this.currentConversation.conversationType === RongIMLib.ConversationType.PRIVATE;
       },
 
       isGroupConversation() {
-        return this.currentConversation && this.currentConversation.conversationType === RongIMLib.ConversationType.GROUP;
+        return this.currentConversation &&
+          this.currentConversation.conversationType === RongIMLib.ConversationType.GROUP;
       },
     },
 

@@ -33,7 +33,7 @@ export const ContactMutations = {
 // 群组
 export const GroupMutations = {
   SetGroupList: 'SetGroupList',
-
+  SetGroupInfo: 'SetGroupInfo',
   SetGroupMemberList: 'SetGroupMemberList',
 };
 
