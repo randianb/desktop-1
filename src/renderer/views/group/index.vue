@@ -3,7 +3,7 @@
   <div>
     <group-list></group-list>
 
-    <router-view></router-view>
+    <router-view class="flex1 flexbox flex__direction-row"></router-view>
   </div>
 </template>
 

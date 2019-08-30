@@ -24,7 +24,7 @@
             </div>
             <!--<label class="time flex-selft">{{s.latestMessage.sentTime}}</label>-->
             <label class="time flex-selft">
-              <i class="iconfont icon-unmuted" v-if="isConversationMuted(s)"></i>
+              <i class="iconfont icon-pingbi" v-if="isConversationMuted(s)"></i>
             </label>
           </li>
         </ul>
@@ -69,7 +69,6 @@
           isMuted = groupInfo.isMuted;
         }
 
-        console.log(isMuted);
         return isMuted;
       }
     },

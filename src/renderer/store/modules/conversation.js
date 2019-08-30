@@ -29,7 +29,7 @@ const conversation = {
     // 获取会话列表
     async [ConversationActions.GetConversationList]({dispatch, commit, getters}, payload) {
       getters.imClient.getInstance().getConversationList({
-        onSuccess: async function(list) {
+        onSuccess: async function (list) {
           try {
             for (let i = 0; i < list.length; ++i) {
               let item = list[i];
@@ -49,7 +49,7 @@ const conversation = {
             console.error(e);
           }
         },
-        onError: function(error) {
+        onError: function (error) {
           console.error(error);
         }
       }, null);
@@ -60,23 +60,23 @@ const conversation = {
       let conversationType = payload.conversationType;
       let targetId = payload.targetId;
       getters.imClient.getInstance().getConversation(conversationType, targetId, {
-        onSuccess: function(con) {
-          if (!con || con.unreadMessageCount === 0) return;
+        onSuccess: function (conversation) {
+          if (!conversation || conversation.unreadMessageCount === 0) return;
 
           // 清除未读消息
           getters.imClient.getInstance().clearUnreadCount(conversationType, targetId, {
             onSuccess: function () {
               // 清除未读消息成功
-              con.unreadMessageCount = payload.count;
-              getters.imClient.getInstance().updateConversation(con);
-              // console.log("清除未读消息成功: ", con);
+              conversation.unreadMessageCount = payload.count;
+              getters.imClient.getInstance().updateConversation(conversation);
+              // console.log("清除未读消息成功: ", conversation);
             },
             onError: function (e) {
               console.error('清除未读消息失败：', e);
             }
           })
         },
-        onError: function(e) {
+        onError: function (e) {
           console.error(e);
         }
       });
@@ -88,7 +88,7 @@ const conversation = {
       let conversationType = payload.conversationType;
       let targetId = payload.targetId;
       let msg = null;
-      if (payload.messageType === 1){
+      if (payload.messageType === 1) {
         msg = new RongIMLib.TextMessage({
           content: payload.content,
           extra: ''
@@ -141,6 +141,9 @@ const conversation = {
             case RongIMLib.ErrorCode.NOT_IN_GROUP:
               info = '不在群组中';
               break;
+            case RongIMLib.ErrorCode.FORBIDDEN_IN_GROUP:
+              info = '当前群组已被禁言';
+              break;
             case RongIMLib.ErrorCode.NOT_IN_CHATROOM:
               info = '不在聊天室中';
               break;
@@ -153,22 +156,66 @@ const conversation = {
 
     // 启动新的会话
     async [ConversationActions.StartConversation]({dispatch, commit}, payload) {
-      const con = {
-        conversationType: payload.conversationType,
-        targetId: payload.targetId,
-      };
+      let conversationTitle = undefined,
+        conversationType = payload.conversationType,
+        draft = undefined,
+        isTop = false,
+        latestMessage = {
+          content: {
+            content: undefined,
+          },
+          conversationType: payload.conversationType
+        },
+        latestMessageId = undefined,
+        notificationStatus = undefined,
+        objectName = undefined,
+        receivedStatus = undefined,
+        receivedTime = undefined,
+        senderUserId = undefined,
+        senderUserName = undefined,
+        sentStatus = undefined,
+        sentTime = undefined,
+        targetId = payload.targetId,
+        unreadMessageCount = 0,
+        senderPortraitUri = undefined,
+        isHidden = false,
+        mentionedMsg = false,
+        hasUnreadMention = false,
+        _readTime = undefined;
 
       if (payload.conversationType === RongIMLib.ConversationType.PRIVATE) {
         let contact = await dispatch(ContactActions.GetContactInfo, {id: payload.targetId});
-        con.conversationTitle = contact.nickname;
-        con.senderPortraitUri = contact.portraitUri;
-      } else if (item.conversationType === RongIMLib.ConversationType.GROUP) {
+        conversationTitle = contact.nickname;
+        senderPortraitUri = contact.portraitUri;
+      } else if (payload.conversationType === RongIMLib.ConversationType.GROUP) {
         let group = await dispatch(GroupActions.GetGroupInfo, {id: payload.targetId});
-        con.conversationTitle = group.name;
-        con.senderPortraitUri = group.portraitUri;
+        conversationTitle = group.name;
+        senderPortraitUri = group.portraitUri;
       }
 
-      commit(ConversationMutations.PrependConversation, con);
+      let conversation = new RongIMLib.Conversation(
+        conversationTitle,
+        conversationType,
+        draft,
+        isTop,
+        latestMessage,
+        latestMessageId,
+        notificationStatus,
+        objectName,
+        receivedStatus,
+        receivedTime,
+        senderUserId,
+        senderUserName,
+        sentStatus,
+        sentTime,
+        targetId,
+        unreadMessageCount,
+        senderPortraitUri,
+        isHidden,
+        mentionedMsg,
+        hasUnreadMention,
+        _readTime);
+      commit(ConversationMutations.PrependConversation, conversation);
     }
   }
 };

@@ -3,11 +3,11 @@
     <li class="time" v-if="message.type === 'time'"><span>{{message.content.text}}</span></li>
     <li class="notice" v-else-if="message.type === 'notice'"><span>{{message.content.text}}</span></li>
     <li class="others" v-else-if="message.direction === 'incoming'">
-      <span class="avatar" @click="onGroupMemberClicked" @contextmenu="onShowGroupMemberContentMenu">
+      <span class="avatar" @click="onGroupMemberClicked" @contextmenu="onGroupMemberContentMenu">
         <img :src="message.sender.portraitUri"/>
       </span>
 
-      <div class="content" @contextmenu="onShowMsgContentMenu">
+      <div class="content" @contextmenu="onMessageContentMenu">
         <p class="author">{{message.sender.nickname}}</p>
         <div class="msg" v-if="message.type === 'msg-txt'">
           <span>{{message.content.text}}</span>
@@ -94,16 +94,22 @@
     methods: {
       // 用户被左键点击
       async onGroupMemberClicked($event) {
-        console.log('会员被左键点击, 显示名片', $event)
+        this.$emit('groupMemberClicked', {
+          event: $event,
+        });
       },
 
-      async onShowGroupMemberContentMenu($event) {
-        console.log('会员右键菜单', $event)
+      async onGroupMemberContentMenu($event) {
+        this.$emit('groupMemberContentMenu', {
+          event: $event,
+        });
       },
       
       // 消息被右键点击
-      async onShowMsgContentMenu($event) {
-        console.log('消息右键菜单', $event)
+      async onMessageContentMenu($event) {
+        this.$emit('messageContentMenu', {
+          event: $event,
+        });
       },
       
       // 图片双击

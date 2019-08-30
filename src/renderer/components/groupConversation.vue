@@ -22,7 +22,7 @@
       <el-dialog :visible.sync="dlgBulletinVisible" width="400px">
         <p slot="title" class="fs-18 ff-st">群公告</p>
         <p class="ff-st" style="margin:-20px 0 -10px;">
-          <span v-if="groupInfo.bulletin"{{groupInfo.bulletin}}></span>
+          <span v-if="groupInfo.bulletin" {{groupInfo.bulletin}}></span>
           <span v-else class="el-upload__tip">暂无群公告</span>
         </p>
 
@@ -80,11 +80,21 @@
 
         <div class="vChatMsg-cnt">
           <ul class="clearfix" id="J__chatMsgList" v-infinite-scroll>
-            <message-bubble v-for="(msg, idx) in messages" :key="idx" :message="msg"></message-bubble>
+            <message-bubble v-for="(msg, idx) in messages" :key="idx"
+                            :message="msg"
+                            @groupMemberClicked="onGroupMemberClicked"
+                            @groupMemberContentMenu="onGroupMemberContentMenu"
+                            @messageContentMenu="onMessageContentMenu"></message-bubble>
           </ul>
         </div>
       </div>
     </div>
+
+    <!--会员点击-->
+
+    <!--会员右键菜单-->
+
+    <!--消息右键菜单-->
 
     <!--消息发送框-->
     <message-send-box @sendMessage="onSendMessage"></message-send-box>
@@ -92,7 +102,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {ConversationActions, GroupActions, MessageActions} from "../store/actionTypes";
 
   export default {
@@ -205,7 +214,28 @@
         } catch (e) {
           console.error(`群组消息发送失败: `, e);
         }
-      }
+      },
+
+      /**
+       * 会员点击事件。
+       */
+      async onGroupMemberClicked({event}) {
+        console.log('会员被左键点击, 显示名片', event);
+      },
+
+      /**
+       * 会员右键菜单。
+       */
+      async onGroupMemberContentMenu({event}) {
+        console.log('会员右键菜单', event)
+      },
+
+      /**
+       * 消息右键菜单。
+       */
+      async onMessageContentMenu({event}) {
+        console.log('消息右键菜单', event)
+      },
     },
   }
 

@@ -52,10 +52,10 @@ $(function(){
         e.preventDefault();
         let eX = e.pageX, eY = e.pageY, _tpl;
         _tpl = `<div class='wc__contextmenuRecordChat menu'>
-         <a href='#'>@他/她</a>
+         <a href='#'>@TA</a>
          <a href='#'>禁言</a>
          <a class='deliver'></a>
-         <a href='#'>移除群聊</a></div>
+         <a href='#'>移出群聊</a></div>
         `;
         contextMenu(eX, eY, _tpl);
     });
