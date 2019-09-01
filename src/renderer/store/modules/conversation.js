@@ -84,7 +84,6 @@ const conversation = {
 
     // 发送消息
     async [ConversationActions.SendMessage]({getters, commit}, payload) {
-      // console.log(payload);
       let conversationType = payload.conversationType;
       let targetId = payload.targetId;
       let msg = null;

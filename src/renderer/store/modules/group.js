@@ -2,6 +2,7 @@ import {GroupActions} from "../actionTypes";
 import {GroupMutations} from "../mutationTypes";
 
 import request from '../../utils/request';
+import {Constants} from "../../utils/constants";
 
 const group = {
   state: {
@@ -120,7 +121,9 @@ const group = {
         if (group.id === payload.id) return group;
       }
 
-      return {}
+      return {
+        portraitUri: Constants.DefaultPortraitUri
+      };
     },
 
     // 获取成员信息

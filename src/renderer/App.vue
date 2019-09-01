@@ -30,9 +30,8 @@
       try {
         await this.$store.dispatch(AppActions.InitApp);
 
-        await this.$store.dispatch(ContactActions.GetContactList);
-        await this.$store.dispatch(GroupActions.GetGroupList);
-
+        this.$store.dispatch(ContactActions.GetContactList);
+        this.$store.dispatch(GroupActions.GetGroupList);
         this.$store.dispatch(RongCloudActions.InitClient);
       } catch (e) {
         console.error(e);

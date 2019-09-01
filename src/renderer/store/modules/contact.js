@@ -1,5 +1,6 @@
 import {ContactActions} from "../actionTypes";
 import {ContactMutations} from "../mutationTypes";
+import {Constants} from "../../utils/constants";
 
 import request from '../../utils/request';
 
@@ -39,7 +40,9 @@ const contact = {
         if (contact.user.id === payload.id) return contact.user;
       }
 
-      return {}
+      return {
+        portraitUri: Constants.DefaultPortraitUri
+      };
     },
   }
 };

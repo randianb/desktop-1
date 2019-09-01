@@ -32,7 +32,7 @@
               v-model="content">
           </el-input>
         </div>
-        <el-button size="mini" type="success" @click="onSendMessage(1)">发送</el-button>
+        <el-button size="mini" type="success" @click="onSendMessage(1)">发送(S)</el-button>
       </div>
 
       <!-- 表情区域 -->
