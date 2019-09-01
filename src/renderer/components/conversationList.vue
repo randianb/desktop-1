@@ -16,11 +16,11 @@
               @click="onConversationClicked(s)">
             <div class="img">
               <em class="wc__badge" v-if="s.unreadMessageCount">{{s.unreadMessageCount}}</em>
-              <img :src="s.senderPortraitUri"/>
+              <el-avatar fit="fill" shape="square" :size="40" :src="s.senderPortraitUri"/>
             </div>
             <div class="info flex1">
               <h2 class="title clamp1">{{s.conversationTitle}}</h2>
-              <p class="desc clamp1">{{s.latestMessage.content.content}}</p>
+              <p class="desc clamp1">{{s.latestMessage.content.content || ""}}</p>
             </div>
             <!--<label class="time flex-selft">{{s.latestMessage.sentTime}}</label>-->
             <label class="time flex-selft">
