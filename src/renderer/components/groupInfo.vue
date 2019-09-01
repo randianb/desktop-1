@@ -1,14 +1,12 @@
 <template>
-  <el-dialog :visible="dialogGroupInfoVisible" width="480px" center>
+  <el-dialog :visible="visible" width="480px" center @close="onClosed">
     <p slot="title" class="fs-18 ff-st">群组详情({{groupMembers.length}})</p>
     <div class="wc__groupMemInfo-panel" style="margin:-20px 0; max-height: 420px; overflow-y: auto;">
       <div class="wc__ucinfo-qunMember">
         <ul class="clearfix">
           <li v-for="(member, idx) in groupMembers" :key="idx">
-            <a href="#">
-              <img class="uimg" :src="member.portraitUri">
-              <span class="name">{{member.nickname}}</span>
-            </a>
+            <img class="uimg" :src="member.memberInfo.portraitUri">
+            <span class="name">{{member.memberInfo.nickname}}</span>
           </li>
         </ul>
       </div>
@@ -19,9 +17,10 @@
               <label class="lbl flex1">群聊名称</label>
               <input class="val" type="text" :value="groupInfo.name" readonly="true">
             </div>
-            <!--<div class="item flexbox flex-alignc"><label class="lbl flex1">我在本群的昵称</label>-->
-            <!--<input class="val" type="text" value="Wqq_王巧巧">-->
-            <!--</div>-->
+            <!--div class="item flexbox flex-alignc">
+              <label class="lbl flex1">我在本群的昵称</label>
+              <input class="val" type="text" :value="{{}}">
+            </div-->
           </li>
           <!--li>
             <div class="item flexbox flex-alignc"><label class="lbl flex1">置顶聊天</label>
@@ -60,8 +59,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
-
   export default {
     props: {
       groupInfo: {
@@ -70,7 +67,7 @@
         }
       },
 
-      dialogGroupInfoVisible: {
+      visible: {
         type: Boolean,
         default: () => false,
       },
@@ -83,15 +80,21 @@
     },
 
     computed: {
-      ...mapGetters(['groupMembers']),
+      groupMembers() {
+        return this.$store.getters.groupMembers(this.groupInfo.id) || [];
+      }
     },
 
     mounted() {
     },
 
     methods: {
+      onClosed() {
+        this.$emit('close');
+      },
+
       onQuitGroup() {
-        this.dialogGroupInfoVisible = false;
+        this.visible = false;
         this.dialogVisible_groupSetAlert = false;
         this.$message({type: 'success', center: true, message: '您已经退出群聊!'});
       }

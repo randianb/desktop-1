@@ -8,13 +8,15 @@
           <a class="lk" @click="dlgBulletinVisible = true"><i class="iconfont icon-gonggao"></i></a>
         </el-tooltip>
         <el-tooltip :content="groupInfo.isMuted ? '解除禁言' : '群组禁言'" placement="bottom">
-          <a class="lk" @click="dialogMuteVisible = true">
+          <a class="lk" @click="dlgMuteGroupVisible = true">
             <i class="iconfont icon-pingbi" v-if="groupInfo.isMuted"></i>
             <i class="iconfont icon-unmuted" v-else></i>
           </a>
         </el-tooltip>
         <el-tooltip content="群设置" placement="bottom">
-          <a class="lk" @click="dialogGroupInfoVisible = true"><i class="iconfont icon-dots"></i></a>
+          <a class="lk" @click="dlgGroupInfoVisible = true">
+            <i class="iconfont icon-dots"></i>
+          </a>
         </el-tooltip>
       </div>
 
@@ -33,19 +35,22 @@
       </el-dialog>
 
       <!--禁言-->
-      <el-dialog :visible.sync="dialogMuteVisible" width="300px">
+      <el-dialog :visible.sync="dlgMuteGroupVisible" width="300px">
         <p slot="title" class="fs-18 ff-st">提示</p>
         <p class="ff-st c-999" style="margin:-20px 0 -10px;">
           {{groupInfo.isMuted ? '确定要解除群禁？' : '确定要执行群禁言？'}}
         </p>
         <div slot="footer">
-          <el-button size="mini" @click="dialogMuteVisible = false">取消</el-button>
+          <el-button size="mini" @click="dlgMuteGroupVisible = false">取消</el-button>
           <el-button type="primary" size="mini" @click="onMuteGroupClicked">确定</el-button>
         </div>
       </el-dialog>
 
       <!--群组详情-->
-      <group-info :visible="dialogGroupInfoVisible" :groupInfo="groupInfo"></group-info>
+      <group-info :groupInfo="groupInfo"
+                  :visible="dlgGroupInfoVisible"
+                  @close="dlgGroupInfoVisible = false">
+      </group-info>
     </div>
 
     <!--被禁言提示-->
@@ -119,8 +124,8 @@
 
         dialogVisibleMuted: false,          // 显示禁言提示
         dlgBulletinVisible: false,          // 显示公告对话框
-        dialogMuteVisible: false,           // 消息屏蔽对话框
-        dialogGroupInfoVisible: true,      // 群设置对话框
+        dlgMuteGroupVisible: false,         // 消息屏蔽对话框
+        dlgGroupInfoVisible: false,         // 群设置对话框
       }
     },
 
@@ -189,7 +194,7 @@
             groupId: this.conversation.targetId
           });
 
-          this.dialogMuteVisible = false;
+          this.dlgMuteGroupVisible = false;
           this.$message({type: 'success', center: true, message: '操作成功!'});
         } catch (e) {
           this.$message.error(e.message);
