@@ -259,7 +259,7 @@
 
           await this.$store.dispatch(GroupActions.SyncGroupInfo, {
             groupId: this.groupInfo.id,
-          })
+          });
         } catch (e) {
           if (e.message) this.$message.error(e.message);
         }

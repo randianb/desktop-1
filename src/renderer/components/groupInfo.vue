@@ -17,20 +17,26 @@
               <label class="lbl flex1">群聊名称</label>
               <input class="val" type="text" :value="groupInfo.name" readonly="true">
             </div>
-            <!--div class="item flexbox flex-alignc">
+            <div class="item flexbox flex-alignc">
               <label class="lbl flex1">我在本群的昵称</label>
-              <input class="val" type="text" :value="{{}}">
-            </div-->
-          </li>
-          <!--li>
-            <div class="item flexbox flex-alignc"><label class="lbl flex1">置顶聊天</label>
-              <div class="cnt"><input class="cp__checkbox-switch" type="checkbox"></div>
-            </div>
-            <div class="item flexbox flex-alignc"><label class="lbl flex1">显示群成员昵称</label>
-              <div class="cnt"><input class="cp__checkbox-switch" type="checkbox" checked=""></div>
+              <input class="val" type="text" value="">
             </div>
           </li>
           <li>
+            <div class="item flexbox flex-alignc">
+              <label class="lbl flex1">允许私聊</label>
+              <div class="cnt">
+                <el-switch class="cp__checkbox-switch" v-model="groupInfo.allowPrivateChat" @change="onUpdateAllowPrivateChat"/>
+              </div>
+            </div>
+            <div class="item flexbox flex-alignc">
+              <label class="lbl flex1">入群验证</label>
+              <div class="cnt">
+                <el-switch class="cp__checkbox-switch" v-model="groupInfo.joinConfirm" @change="onUpdateJoinConfirm"/>
+              </div>
+            </div>
+          </li>
+          <!--li>
             <div class="item flexbox flex-alignc wc__material-cell"><label class="lbl flex1">设置当前聊天背景</label>
             </div>
           </li>
@@ -59,6 +65,8 @@
 </template>
 
 <script>
+  import {GroupActions} from "../store/actionTypes";
+
   export default {
     props: {
       groupInfo: {
@@ -89,14 +97,50 @@
     },
 
     methods: {
+      // 关闭
       onClosed() {
         this.$emit('close');
       },
 
-      onQuitGroup() {
+      // 设置是否允许私聊
+      async onUpdateAllowPrivateChat(v) {
+        try {
+          await this.$store.dispatch(GroupActions.SetAllowPrivateChat, {
+            groupId: this.groupInfo.id,
+            allowed: v ? 1 : 0
+          });
+
+          await this.$store.dispatch(GroupActions.SyncGroupInfo, {
+            groupId: this.groupInfo.id,
+          });
+        } catch (e) {
+          if (e.message) this.$message.error(e.message);
+        }
+      },
+
+      // 设置入群是否需要验证
+      async onUpdateJoinConfirm(v) {
+        try {
+          await this.$store.dispatch(GroupActions.SetNeedJoinConfirm, {
+            groupId: this.groupInfo.id,
+            need: v ? 1 : 0
+          });
+
+          await this.$store.dispatch(GroupActions.SyncGroupInfo, {
+            groupId: this.groupInfo.id,
+          });
+        } catch (e) {
+          if (e.message) this.$message.error(e.message);
+        }
+      },
+
+      // 退出群组
+      async onQuitGroup() {
+        /*
         this.visible = false;
         this.dialogVisible_groupSetAlert = false;
         this.$message({type: 'success', center: true, message: '您已经退出群聊!'});
+        */
       }
     }
   }

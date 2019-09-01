@@ -78,8 +78,6 @@ const group = {
         group.isMuted  = payload.isMuted;
         group.bulletin  = payload.bulletin;
         group.memberCount  = payload.memberCount;
-
-        console.log(group);
       });
     },
 
@@ -170,6 +168,16 @@ const group = {
     // 更新群公告
     async [GroupActions.SetBulletin]({commit}, payload) {
       await request({url: `/im/groups/set_bulletin`, method: 'post', data: payload});
+    },
+
+    // 设置是否允许私聊
+    async [GroupActions.SetAllowPrivateChat]({commit}, payload) {
+      await request({url: `/im/groups/set_allow_private_chat`, method: 'post', data: payload});
+    },
+
+    // 设置是否需要入群验证
+    async [GroupActions.SetNeedJoinConfirm]({commit}, payload) {
+      await request({url: `/im/groups/set_need_join_confirm`, method: 'post', data: payload});
     },
 
     // 同步群组信息

@@ -35,6 +35,8 @@ export const GroupActions = {
   UnmuteGroup: 'UnmuteGroup',
   SyncGroupInfo: 'SyncGroupInfo',
   SetBulletin: 'SetBulletin',
+  SetAllowPrivateChat: 'SetAllowPrivateChat',
+  SetNeedJoinConfirm: 'SetNeedJoinConfirm',
 };
 
 // 参数
