@@ -6,7 +6,7 @@ import {UserActions} from "../store/actionTypes";
 import {UserMutations} from "../store/mutationTypes";
 
 const service = axios.create({
-  baseURL: 'http://im.paymoneyplayer.com:8585/v1',
+  baseURL: 'http://localhost:8585/v1',
   timeout: 8000,
   transformRequest: [function (data) {
     return Qs.stringify(data)

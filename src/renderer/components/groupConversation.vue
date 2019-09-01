@@ -22,12 +22,12 @@
       <el-dialog :visible.sync="dlgBulletinVisible" width="400px">
         <p slot="title" class="fs-18 ff-st">群公告</p>
         <p class="ff-st" style="margin:-20px 0 -10px;">
-          <span v-if="groupInfo.bulletin" {{groupInfo.bulletin}}></span>
+          <span v-if="groupInfo.bulletin">{{groupInfo.bulletin}}</span>
           <span v-else class="el-upload__tip">暂无群公告</span>
         </p>
 
         <div slot="footer">
-          <!--el-button type="success" size="mini" @click="">编辑</el-button-->
+          <el-button type="success" size="mini" @click="onEditBulletin">编辑</el-button>
           <el-button type="primary" size="mini" @click="dlgBulletinVisible = false">关闭</el-button>
         </div>
       </el-dialog>
@@ -185,7 +185,7 @@
             });
           }
 
-          await this.$store.dispatch(GroupActions.UpdateGroupInfo, {
+          await this.$store.dispatch(GroupActions.SyncGroupInfo, {
             groupId: this.conversation.targetId
           });
 
@@ -236,6 +236,29 @@
       async onMessageContentMenu({event}) {
         console.log('消息右键菜单', event)
       },
+
+      /**
+       * 编辑群公告。
+       */
+      async onEditBulletin() {
+        try {
+          const res = await this.$prompt('输入公告内容', '编辑群公告');
+          if (res.action !== 'confirm') return;
+
+          await this.$store.dispatch(GroupActions.SetBulletin, {
+            groupId: this.groupInfo.id,
+            bulletin: res.value
+          });
+
+          this.dlgBulletinVisible = false;
+
+          await this.$store.dispatch(GroupActions.SyncGroupInfo, {
+            groupId: this.groupInfo.id,
+          })
+        } catch (e) {
+          if (e.message) this.$message.error(e.message);
+        }
+      }
     },
   }
 

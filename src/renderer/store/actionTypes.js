@@ -33,7 +33,8 @@ export const GroupActions = {
 
   MuteGroup: 'MuteGroup',
   UnmuteGroup: 'UnmuteGroup',
-  UpdateGroupInfo: 'UpdateGroupInfo'
+  SyncGroupInfo: 'SyncGroupInfo',
+  SetBulletin: 'SetBulletin',
 };
 
 // 参数

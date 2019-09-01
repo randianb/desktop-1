@@ -104,7 +104,7 @@ const conversation = {
 
       getters.imClient.getInstance().sendMessage(conversationType, targetId, msg, {
         onSuccess: function (message) {
-          Vue.prototype.$message.success('消息发送成功');
+          // Vue.prototype.$message.success('消息发送成功');
 
           const sender = getters.userInfo;
           payload = {
@@ -156,7 +156,7 @@ const conversation = {
 
     // 启动新的会话
     async [ConversationActions.StartConversation]({dispatch, commit}, payload) {
-      let conversationTitle = undefined,
+      /*let conversationTitle = undefined,
         conversationType = payload.conversationType,
         draft = undefined,
         isTop = false,
@@ -215,7 +215,13 @@ const conversation = {
         mentionedMsg,
         hasUnreadMention,
         _readTime);
-      commit(ConversationMutations.PrependConversation, conversation);
+      commit(ConversationMutations.PrependConversation, conversation);*/
+      dispatch(ConversationActions.SendMessage, {
+        conversationType: payload.conversationType,
+        targetId: payload.targetId,
+        content: '',
+        messageType: 1
+      });
     }
   }
 };
